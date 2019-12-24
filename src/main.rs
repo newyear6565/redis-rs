@@ -76,6 +76,16 @@ impl User {
         self.age = 100;
         &self.name
     }
+
+    fn build() -> Self {
+        User {
+            name: String::from(""),
+            age: 0,
+            active: false,
+            name_part: String::from(""),
+            dna: [0; 16],
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -91,9 +101,9 @@ struct Shoe {
 }
 
 fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
-    let a = shoes.into_iter()
+    shoes.into_iter()
         .filter(|s| s.size == shoe_size)
-        .collect();
+        .collect()
 }
 
 #[test]
