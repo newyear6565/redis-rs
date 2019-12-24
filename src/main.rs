@@ -44,6 +44,31 @@ struct User {
     age: u16,
     active: bool,
     name_part: String,
+    dna: [u8; 16],
+}
+
+struct Counter {
+    count: u32,
+}
+
+impl Counter {
+    fn new() -> Counter {
+        Counter { count: 0 }
+    }
+}
+
+impl Iterator for Counter {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count += 1;
+
+        if self.count < 6 {
+            Some(self.count)
+        } else {
+            None
+        }
+    }
 }
 
 impl User {
@@ -53,7 +78,78 @@ impl User {
     }
 }
 
+#[derive(Debug)]
+enum Status {
+    Value(u32),
+    Stop,
+}
+
+#[derive(PartialEq, Debug)]
+struct Shoe {
+    size: u32,
+    style: String,
+}
+
+fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
+    let a = shoes.into_iter()
+        .filter(|s| s.size == shoe_size)
+        .collect();
+}
+
+#[test]
+fn filters_by_size() {
+    let shoes = vec![
+        Shoe { size: 10, style: String::from("sneaker") },
+        Shoe { size: 13, style: String::from("sandal") },
+        Shoe { size: 10, style: String::from("boot") },
+    ];
+
+    let in_my_size = shoes_in_my_size(shoes, 10);
+
+    assert_eq!(
+        in_my_size,
+        vec![
+            Shoe { size: 10, style: String::from("sneaker") },
+            Shoe { size: 10, style: String::from("boot") },
+        ]
+    );
+}
+
+
 fn main() {
+
+    let list_of_statuses: Vec<Status> =
+    (0u32..20)
+    .map(Status::Value)
+    .collect();
+
+    println!("{:?}",list_of_statuses);
+    let a : String = "abcdefg".to_string();
+    let b : &str = &a[1..2];
+    println!("{}",b);
+
+    for i in 1..5 {
+        println!("### {}", i);
+    }
+
+    let mut a = vec![1,2,3,4];
+    for b in a.iter_mut() {
+        *b = *b + 2;
+    }
+    println!("{:?}", a);
+
+    // let sum: Vec<_> = Counter::new().zip(Counter::new().skip(1))
+    //                              .map(|(a, b)| a * b)
+    //                              .filter(|x| x % 3 == 0)
+    //                              .collect();
+    let sum: Vec<_> = Counter::new().zip(Counter::new().skip(2))
+                                 .map(|(a, b)| (a ,b))
+                                //  .filter(|x| x % 3 == 0)
+                                 .collect();
+    // assert_eq!(18, sum);
+    println!("vec is {:?}", sum);
+
+    let test_closure = |num| num+2;
     let num = 40;
     let test = match num {
         1 => {
@@ -63,8 +159,17 @@ fn main() {
         3 => {println!("3dd");4},
         4 => {println!("4dd");5},
         _ => {println!("other");6},
+        // _ => panic!("dfs"),
     };
 
+    // let mut sd = "dsf";
+    // sd.push_str("_dssfsdf");
+    // let mut i = &sd[0];
+    // *i = 'f';
+
+    // println!("#####  {}",sd);
+
+    println!("closure: {}", test_closure(3));
     for num in (1..4).rev() {
         println!("{}", num);
     }
@@ -77,12 +182,15 @@ fn main() {
         age,
         active: true,
         name_part,
+        dna:[0;16]
     };
 
     user1.age = 81;
+    user1.dna[3] = 3;
     println!("## name is {}", user1.get_name());
 
     println!("{:#?}", user1);
+    println!("{:?}", user1);
     println!("test is {}", test);
     println!("String is {}", &get_string());
 
