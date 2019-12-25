@@ -3,6 +3,8 @@ mod common;
 mod ui;
 use redis::Commands;
 use crate::common::service::say_hello;
+use std::collections::HashMap;
+use std::cell::RefCell;
 
 enum Message {
     Quit,
@@ -128,6 +130,15 @@ fn filters_by_size() {
 
 fn main() {
 
+    let mut test_map:Vec<RefCell<HashMap<u32, String>>> = Vec::new();
+    let map1= RefCell::new(HashMap::new());
+    let map2= RefCell::new(HashMap::new());
+    (*map1.borrow_mut()).insert(0 as u32, String::from("0000"));
+    test_map.push(map1);
+    test_map.push(map2);
+
+    println!("{:#?}",test_map[0]);
+
     let list_of_statuses: Vec<Status> =
     (0u32..20)
     .map(Status::Value)
@@ -137,7 +148,7 @@ fn main() {
     let a : String = "abcdefg".to_string();
     let b : &str = &a[1..2];
     let cdddd = String::from("sff  fff ggg");
-    let sfsfs:Vec<&str> = cdddd.split(' ').collect();
+    let _sfsfs:Vec<&str> = cdddd.split(' ').collect();
     println!("{}",b);
 
     for i in 1..5 {
