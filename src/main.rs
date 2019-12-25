@@ -136,6 +136,8 @@ fn main() {
     println!("{:?}",list_of_statuses);
     let a : String = "abcdefg".to_string();
     let b : &str = &a[1..2];
+    let cdddd = String::from("sff  fff ggg");
+    let sfsfs:Vec<&str> = cdddd.split(' ').collect();
     println!("{}",b);
 
     for i in 1..5 {
